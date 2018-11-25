@@ -2,19 +2,19 @@ import XCTest
 @testable import Geometry
 
 final class Vector2Tests: XCTestCase {
-    typealias Vector2 = Geometry.Vector2<Double>
+    typealias Vector = Geometry.Vector2<Double>
 
     func testInit() {
-        XCTAssertEqual(Vector2(Point2(x: 1, y: 0)),  Vector2(dx: 1, dy:  0))
-        XCTAssertEqual(Vector2(Angle2(degrees: 90)), .up,
+        XCTAssertEqual(Vector(Point2(x: 1, y: 0)),  Vector(dx: 1, dy:  0))
+        XCTAssertEqual(Vector(Angle2(degrees: 90)), .up,
                        accuracy: 1e-15)
     }
 
     func testStaticProperties() {
-        XCTAssertEqual(Vector2.left,  Vector2(dx: -1, dy:  0))
-        XCTAssertEqual(Vector2.right, Vector2(dx:  1, dy:  0))
-        XCTAssertEqual(Vector2.up,    Vector2(dx:  0, dy:  1))
-        XCTAssertEqual(Vector2.down,  Vector2(dx:  0, dy: -1))
+        XCTAssertEqual(Vector2.left,  Vector(dx: -1, dy:  0))
+        XCTAssertEqual(Vector2.right, Vector(dx:  1, dy:  0))
+        XCTAssertEqual(Vector2.up,    Vector(dx:  0, dy:  1))
+        XCTAssertEqual(Vector2.down,  Vector(dx:  0, dy: -1))
     }
 
     func testDotProduct() {
@@ -23,8 +23,8 @@ final class Vector2Tests: XCTestCase {
         XCTAssertEqual(dot(.left,  .up),     0)
         XCTAssertEqual(dot(.right, .down),   0)
 
-        XCTAssertEqual(dot(Vector2(dx: 2, dy: 3),
-                           Vector2(dx: 1, dy: 4)), 14)
+        XCTAssertEqual(dot(Vector(dx: 2, dy: 3),
+                           Vector(dx: 1, dy: 4)), 14)
     }
 
     func testLength() {
@@ -33,36 +33,36 @@ final class Vector2Tests: XCTestCase {
         XCTAssertEqual(Vector2.up.length, 1)
         XCTAssertEqual(Vector2.down.length, 1)
 
-        XCTAssertEqual(Vector2(dx: 3, dy: 4).length, 5)
+        XCTAssertEqual(Vector(dx: 3, dy: 4).length, 5)
     }
 
     func testOperators() {
-        XCTAssertEqual(Vector2(dx: 1, dy: 3) + Vector2(dx: 2, dy: 4),
-                       Vector2(dx: 3, dy: 7))
-        XCTAssertEqual(Vector2(dx: 4, dy: 3) - Vector2(dx: 2, dy: 1),
-                       Vector2(dx: 2, dy: 2))
-        XCTAssertEqual(Vector2(dx: 4, dy: 3) * 2,
-                       Vector2(dx: 8, dy: 6))
-        XCTAssertEqual(-Vector2(dx: 1, dy: 2),
-                       Vector2(dx: -1, dy: -2))
-        XCTAssertEqual(Vector2(dx: 4, dy: 6) / 2,
-                       Vector2(dx: 2, dy: 3))
+        XCTAssertEqual(Vector(dx: 1, dy: 3) + Vector(dx: 2, dy: 4),
+                       Vector(dx: 3, dy: 7))
+        XCTAssertEqual(Vector(dx: 4, dy: 3) - Vector(dx: 2, dy: 1),
+                       Vector(dx: 2, dy: 2))
+        XCTAssertEqual(Vector(dx: 4, dy: 3) * 2,
+                       Vector(dx: 8, dy: 6))
+        XCTAssertEqual(-Vector(dx: 1, dy: 2),
+                       Vector(dx: -1, dy: -2))
+        XCTAssertEqual(Vector(dx: 4, dy: 6) / 2,
+                       Vector(dx: 2, dy: 3))
     }
 
     func testInPlaceOperators() {
-        var vector = Vector2(dx: 1, dy: 3)
+        var vector = Vector(dx: 1, dy: 3)
 
-        vector += Vector2(dx: 3, dy: 2)
-        XCTAssertEqual(vector, Vector2(dx: 4, dy: 5))
+        vector += Vector(dx: 3, dy: 2)
+        XCTAssertEqual(vector, Vector(dx: 4, dy: 5))
 
-        vector -= Vector2(dx: 3, dy: 2)
-        XCTAssertEqual(vector, Vector2(dx: 1, dy: 3))
+        vector -= Vector(dx: 3, dy: 2)
+        XCTAssertEqual(vector, Vector(dx: 1, dy: 3))
 
         vector *= 12
-        XCTAssertEqual(vector, Vector2(dx: 12, dy: 36))
+        XCTAssertEqual(vector, Vector(dx: 12, dy: 36))
 
         vector /= 4
-        XCTAssertEqual(vector, Vector2(dx: 3, dy: 9))
+        XCTAssertEqual(vector, Vector(dx: 3, dy: 9))
     }
 
     func testRotate() {
@@ -74,16 +74,16 @@ final class Vector2Tests: XCTestCase {
                        accuracy: 1e-15)
         XCTAssertEqual(Vector2.down.rotated(by: 90.0), .right,
                        accuracy: 1e-15)
-        XCTAssertEqual(Vector2(dx: 2, dy: 2).rotated(by: 105.0),
-                       Vector2(dx: -sqrt(6), dy: sqrt(2)),
+        XCTAssertEqual(Vector(dx: 2, dy: 2).rotated(by: 105.0),
+                       Vector(dx: -sqrt(6), dy: sqrt(2)),
                        accuracy: 1e-15)
-        XCTAssertEqual(Vector2(dx: 0.0, dy: 2.0).rotated(by: -45.0),
-                       Vector2(dx: sqrt(2), dy: sqrt(2)),
+        XCTAssertEqual(Vector(dx: 0.0, dy: 2.0).rotated(by: -45.0),
+                       Vector(dx: sqrt(2), dy: sqrt(2)),
                        accuracy: 1e-15)
     }
 
     func testRotateInPlace() {
-        var vector = Vector2.right
+        var vector = Vector2<Double>.right
 
         vector.rotate(by: 90.0)
         XCTAssertEqual(vector, .up, accuracy: 1e-15)
@@ -99,14 +99,14 @@ final class Vector2Tests: XCTestCase {
     }
 
     func testNormalized() {
-        XCTAssertEqual(Vector2(dx: 1 + 1e-8, dy: 0).normalized(), .right,
+        XCTAssertEqual(Vector(dx: 1 + 1e-8, dy: 0).normalized(), .right,
                        accuracy: 1e-15)
-        XCTAssertEqual(Vector2(dx: 4, dy: 0).normalized(), .right,
+        XCTAssertEqual(Vector(dx: 4, dy: 0).normalized(), .right,
                        accuracy: 1e-15)
-        XCTAssertEqual(Vector2(dx: 0, dy: 5).normalized(), .up,
+        XCTAssertEqual(Vector(dx: 0, dy: 5).normalized(), .up,
                        accuracy: 1e-15)
-        XCTAssertEqual(Vector2(dx: 3, dy: 4).normalized(),
-                       Vector2(dx: 0.6, dy: 0.8),
+        XCTAssertEqual(Vector(dx: 3, dy: 4).normalized(),
+                       Vector(dx: 0.6, dy: 0.8),
                        accuracy: 1e-15)
     }
 
@@ -141,34 +141,39 @@ final class Vector2Tests: XCTestCase {
     }
 
     func testDescription() {
-        XCTAssertEqual(Vector2(dx: 1.0, dy: 3.1415).description,
+        XCTAssertEqual(Vector(dx: 1.0, dy: 3.1415).description,
                        "<1.0, 3.1415>")
     }
 
     func testDocumentation() {
         var 🐝 = Point2(x:2, y:1), 🌻 = Point2(x:5, y:5), 👻 = Point2(x:3, y:0)
 
-        let offsetToFlower = 🌻 - 🐝 // Vector2(dx: 3, dy: 4)
-        print("🌻 is \(offsetToFlower.length) away.") // "🌻 is 5.0 away."
+        func beeBrain() -> Vector2<Double> {
+            let offsetToFlower = 🌻 - 🐝 // Vector2(dx: 3, dy: 4)
+            print("🌻 is \(offsetToFlower.length) away.") // "🌻 is 5.0 away."
 
-        let towardFlower = (🌻 - 🐝).normalized()
-        let awayFromGhost = -(👻 - 🐝).normalized()
+            let towardFlower = (🌻 - 🐝).normalized()
+            let awayFromGhost = -(👻 - 🐝).normalized()
 
-        var direction = (towardFlower + 2.0 * awayFromGhost) / 3.0
+            // A weighted average of each of the bee's goals.
+            var direction = (towardFlower + 2.0 * awayFromGhost) / 3.0
 
-        // How close is this direction to the flower?
-        let angleTowardFlower = direction.angle(to: towardFlower)
+            // How close is this direction to the flower?
+            let angleTowardFlower = direction.angle(to: towardFlower)
 
-        // This bee doesn't move in a beeline.
-        direction.rotate(by: angleTowardFlower.degrees < 0.0 ? -5.0 : 5.0)
+            // This bee doesn't move in a beeline.
+            direction.rotate(by: angleTowardFlower.degrees < 0.0 ? -5.0 : 5.0)
 
-        // Don't let gravity get you down.
-        direction += .up * 0.1
+            // Don't let gravity get you down.
+            direction += .up * 0.1
 
-        🐝 += direction // Move the bee!
+            print("move 🐝", dot(direction, towardFlower), "toward 🌻")
+            print("move 🐝", dot(direction, awayFromGhost), "away from 👻")
 
-        print("🐝 moved", dot(direction, towardFlower), "toward 🌻")
-        print("🐝 moved", dot(direction, awayFromGhost), "away from 👻")
+            return direction
+        }
+
+        🐝 += beeBrain() // Move the bee!
     }
 
     static var allTests = [

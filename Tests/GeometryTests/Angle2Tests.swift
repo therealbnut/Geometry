@@ -72,9 +72,9 @@ final class AngleTests: XCTestCase {
     }
 
     public func testDocumentation() {
-        var angle = Angle(degrees: 15.0)
+        var angle = Angle2(degrees: 15.0)
         angle += 90.0
-        angle += Angle(radians: .pi)
+        angle += Angle2(radians: .pi)
         angle = -angle * 1.5
 
         print("\(angle) (\(angle.radians) radians)") // "112.5º (1.9634954084936211 radians)"
