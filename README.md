@@ -1,6 +1,6 @@
 ![SwiftPM Compatible](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)
 
-# Geometry
+# ⭐️ Geometry 📐
 
 This library defines three generic equatable types [Point2](#point2), [Angle](#angle), and [Vector2](#vector2).
 
