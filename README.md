@@ -51,9 +51,9 @@ func beeBrain() -> Vector2<Double> {
 
     // Don't let gravity get you down.
     direction += .up * 0.1
-
-    print("move 🐝", dot(direction, towardFlower), "toward 🌻")
-    print("move 🐝", dot(direction, awayFromGhost), "away from 👻")
+    
+    print("move 🐝", dot(direction, towardFlower), "toward 🌻") // "move 🐝 0.56 toward 🌻"
+    print("move 🐝", dot(direction, awayFromGhost), "away from 👻") // "move 🐝 0.75 away from 👻"
 
     return direction
 }
