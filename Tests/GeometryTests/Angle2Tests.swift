@@ -2,7 +2,7 @@ import XCTest
 @testable import Geometry
 
 final class AngleTests: XCTestCase {
-    typealias Angle = Geometry.Angle<Double>
+    typealias Angle = Geometry.Angle2<Double>
 
     public func testInitializers() {
         XCTAssertEqual(Angle(degrees: 90), Angle(.up), accuracy: 1e-15)
@@ -71,6 +71,18 @@ final class AngleTests: XCTestCase {
         XCTAssertEqual(Angle(degrees: 90).description, "90.0º")
     }
 
+    public func testDocumentation() {
+        var angle = Angle(degrees: 15.0)
+        angle += 90.0
+        angle += Angle(radians: .pi)
+        angle = -angle * 1.5
+
+        print("\(angle) (\(angle.radians) radians)") // "112.5º (1.9634954084936211 radians)"
+
+        print(cos(Angle(degrees: 60.0))) // "0.5"
+        print(sin(Angle(degrees: 90.0))) // "1.0"
+    }
+
     static var allTests = [
         ("testInitializers", testInitializers),
         ("testOperators", testOperators),
@@ -79,5 +91,6 @@ final class AngleTests: XCTestCase {
         ("testScalarConversions", testScalarConversions),
         ("testTrigFunctions", testTrigFunctions),
         ("testDescription", testDescription),
+        ("testDocumentation", testDocumentation),
         ]
 }

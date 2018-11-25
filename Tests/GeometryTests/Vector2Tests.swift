@@ -6,7 +6,7 @@ final class Vector2Tests: XCTestCase {
 
     func testInit() {
         XCTAssertEqual(Vector2(Point2(x: 1, y: 0)),  Vector2(dx: 1, dy:  0))
-        XCTAssertEqual(Vector2(Angle(degrees: 90)), .up,
+        XCTAssertEqual(Vector2(Angle2(degrees: 90)), .up,
                        accuracy: 1e-15)
     }
 
@@ -145,6 +145,32 @@ final class Vector2Tests: XCTestCase {
                        "<1.0, 3.1415>")
     }
 
+    func testDocumentation() {
+        var 🐝 = Point2(x:2, y:1), 🌻 = Point2(x:5, y:5), 👻 = Point2(x:3, y:0)
+
+        let offsetToFlower = 🌻 - 🐝 // Vector2(dx: 3, dy: 4)
+        print("🌻 is \(offsetToFlower.length) away.") // "🌻 is 5.0 away."
+
+        let towardFlower = (🌻 - 🐝).normalized()
+        let awayFromGhost = -(👻 - 🐝).normalized()
+
+        var direction = (towardFlower + 2.0 * awayFromGhost) / 3.0
+
+        // How close is this direction to the flower?
+        let angleTowardFlower = direction.angle(to: towardFlower)
+
+        // This bee doesn't move in a beeline.
+        direction.rotate(by: angleTowardFlower.degrees < 0.0 ? -5.0 : 5.0)
+
+        // Don't let gravity get you down.
+        direction += .up * 0.1
+
+        🐝 += direction // Move the bee!
+
+        print("🐝 moved", dot(direction, towardFlower), "toward 🌻")
+        print("🐝 moved", dot(direction, awayFromGhost), "away from 👻")
+    }
+
     static var allTests = [
         ("testInit", testInit),
         ("testStaticProperties", testStaticProperties),
@@ -157,5 +183,6 @@ final class Vector2Tests: XCTestCase {
         ("testNormalized", testNormalized),
         ("testAngleTo", testAngleTo),
         ("testDescription", testDescription),
+        ("testDocumentation", testDocumentation),
     ]
 }

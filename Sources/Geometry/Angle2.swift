@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Angle<Scalar: BinaryFloatingPoint>: Equatable {
+public struct Angle2<Scalar: BinaryFloatingPoint>: Equatable {
     @usableFromInline
     internal var vector: Vector2<Scalar>
 
@@ -29,7 +29,7 @@ public struct Angle<Scalar: BinaryFloatingPoint>: Equatable {
     }
 }
 
-extension Angle: ExpressibleByFloatLiteral {
+extension Angle2: ExpressibleByFloatLiteral {
     public typealias FloatLiteralType = Scalar.FloatLiteralType
 
     public init(floatLiteral value: Scalar.FloatLiteralType) {
@@ -37,7 +37,7 @@ extension Angle: ExpressibleByFloatLiteral {
     }
 }
 
-extension Angle {
+extension Angle2 {
 
     @inlinable
     public init(_ vector: Vector2<Scalar>) {
@@ -46,7 +46,7 @@ extension Angle {
 
     @inlinable
     @_transparent
-    public static func +(lhs: Angle, rhs: Angle) -> Angle {
+    public static func +(lhs: Angle2, rhs: Angle2) -> Angle2 {
         var angle = lhs
         angle += rhs
         return angle
@@ -54,14 +54,14 @@ extension Angle {
 
     @inlinable
     @_transparent
-    public static func +=(lhs: inout Angle, rhs: Angle) {
+    public static func +=(lhs: inout Angle2, rhs: Angle2) {
         lhs.vector.rotate(by: rhs)
         lhs.vector.normalize()
     }
 
     @inlinable
     @_transparent
-    public static func -(lhs: Angle, rhs: Angle) -> Angle {
+    public static func -(lhs: Angle2, rhs: Angle2) -> Angle2 {
         var angle = lhs
         angle -= rhs
         return angle
@@ -69,14 +69,14 @@ extension Angle {
 
     @inlinable
     @_transparent
-    public static func -=(lhs: inout Angle, rhs: Angle) {
+    public static func -=(lhs: inout Angle2, rhs: Angle2) {
         lhs.vector.rotate(by: -rhs)
         lhs.vector.normalize()
     }
 
     @inlinable
     @_transparent
-    public static func *(lhs: Angle, rhs: Scalar) -> Angle {
+    public static func *(lhs: Angle2, rhs: Scalar) -> Angle2 {
         var angle = lhs
         angle *= rhs
         return angle
@@ -84,17 +84,17 @@ extension Angle {
 
     @inlinable
     @_transparent
-    public static func *=(lhs: inout Angle, rhs: Scalar) {
+    public static func *=(lhs: inout Angle2, rhs: Scalar) {
         // TODO: This combines multiple iterative solutions,
         // they could probably be combined for more speed:
         // e ^ (m i atan2(y,x)) == (x + i y) ^ rhs
-        lhs = Angle(radians: lhs.radians * rhs)
+        lhs = Angle2(radians: lhs.radians * rhs)
     }
 
     @inlinable
     @_transparent
-    public static prefix func -(angle: Angle) -> Angle {
-        return Angle(vector: Vector2(dx:  angle.vector.dx,
+    public static prefix func -(angle: Angle2) -> Angle2 {
+        return Angle2(vector: Vector2(dx:  angle.vector.dx,
                                      dy: -angle.vector.dy))
     }
 
@@ -111,7 +111,7 @@ extension Angle {
 
 }
 
-extension Angle: CustomStringConvertible {
+extension Angle2: CustomStringConvertible {
 
     public var description: String {
         return "\(degrees)º"
@@ -119,10 +119,10 @@ extension Angle: CustomStringConvertible {
 
 }
 
-public func cos<Scalar: BinaryFloatingPoint>(_ angle: Angle<Scalar>) -> Scalar {
+public func cos<Scalar: BinaryFloatingPoint>(_ angle: Angle2<Scalar>) -> Scalar {
     return angle.vector.dx
 }
 
-public func sin<Scalar: BinaryFloatingPoint>(_ angle: Angle<Scalar>) -> Scalar {
+public func sin<Scalar: BinaryFloatingPoint>(_ angle: Angle2<Scalar>) -> Scalar {
     return angle.vector.dy
 }

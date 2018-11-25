@@ -51,6 +51,15 @@ final class Point2Tests: XCTestCase {
         XCTAssertEqual(Point2(x: 0, y: 4.321).description, "(0.0, 4.321)")
     }
 
+    func testDocumentation() {
+        var point = Point2(x: 10, y: 20)
+
+        point.x = 15
+        print("Point:", point) // "Point: (x: 15.0, y: 20.0)"
+
+        print("Distance:", point.distance(to: .zero)) // "Distance: 25.0"
+    }
+
     static var allTests = [
         ("testInitFromVector", testInitFromVector),
         ("testSubscripts", testSubscripts),
@@ -58,5 +67,6 @@ final class Point2Tests: XCTestCase {
         ("testInPlaceOperators", testInPlaceOperators),
         ("testDistance", testDistance),
         ("testDescription", testDescription),
+        ("testDocumentation", testDocumentation),
     ]
 }

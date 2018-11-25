@@ -40,6 +40,11 @@ extension Point2 {
     public init(_ vector: Vector) {
         self.vector = vector
     }
+
+    public static var zero: Point2 {
+        return Point2(x: 0, y: 0)
+    }
+
 }
 
 extension Point2 {

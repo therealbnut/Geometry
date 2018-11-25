@@ -67,10 +67,17 @@ extension Vector2 {
     }
 
     @inlinable
+    @_transparent
     public static func *(lhs: Vector2, rhs: Scalar) -> Vector2 {
-        return Vector2(dx: lhs.dx * rhs,
-                       dy: lhs.dy * rhs)
+        return rhs * lhs
     }
+
+    @inlinable
+    public static func *(lhs: Scalar, rhs: Vector2) -> Vector2 {
+        return Vector2(dx: lhs * rhs.dx,
+                       dy: lhs * rhs.dy)
+    }
+
     @inlinable
     public static func *=(lhs: inout Vector2, rhs: Scalar) {
         lhs.dx *= rhs
@@ -88,7 +95,7 @@ extension Vector2 {
     }
 
     @inlinable
-    public init(_ angle: Angle<Scalar>) {
+    public init(_ angle: Angle2<Scalar>) {
         self = angle.vector
     }
 
@@ -97,12 +104,12 @@ extension Vector2 {
 extension Vector2 {
 
     @inlinable
-    public mutating func rotate(by angle: Angle<Scalar>) {
+    public mutating func rotate(by angle: Angle2<Scalar>) {
         self = self.rotated(by: angle)
     }
 
     @inlinable
-    public func rotated(by angle: Angle<Scalar>) -> Vector2 {
+    public func rotated(by angle: Angle2<Scalar>) -> Vector2 {
         let that = angle.vector
         return Vector2(dx: dx * that.dx - dy * that.dy,
                        dy: dy * that.dx + dx * that.dy)
@@ -158,8 +165,8 @@ extension Vector2 {
     }
 
     @inlinable
-    public func angle(to that: Vector2) -> Angle<Scalar> {
-        return Angle(Vector2(dx: dot(that, self),
+    public func angle(to that: Vector2) -> Angle2<Scalar> {
+        return Angle2(Vector2(dx: dot(that, self),
                              dy: dot(that, self.perpendicular)))
     }
 }

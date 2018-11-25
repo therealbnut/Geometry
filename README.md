@@ -1,92 +1,88 @@
+![SwiftPM Compatible](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)
+
 # Geometry
 
-## Points
+This library defines three generic equatable types [Point2](#point2), [Angle](#angle), and [Vector2](#vector2).
 
-public struct Point2<Scalar: BinaryFloatingPoint>: Equatable
+## Installation
 
-public var x: Scalar
-public var y: Scalar
-public init(x: Scalar, y: Scalar)
+This is currently pre-release, but you can use it with **Swift Package Manager** from master by setting your `Package.swift` like this:
 
-Point2(_ vector: Vector)
+```swift
+// swift-tools-version:4.2
 
-public func distance(to that: Point2) -> Scalar
+import PackageDescription
 
-## Vectors
+let package2 = Package(
+  name: "MyProject",
+  dependencies: [
+    .package(url: "https://github.com/therealbnut/Geometry.git", .branch("master"))
+  ],
+  targets: []
+)
+```
 
-public var dx: Scalar
-public var dy: Scalar
+## Types
 
-public init(dx: Scalar, dy: Scalar)
+### Vector2
 
-public static var left: Vector2
-public static var right: Vector2
-public static var up: Vector2
-public static var down: Vector2
+`Vector2<Scalar>` defines an angle between in 2-dimensional space. It is the most versatile type in this library. 
 
-public var lengthSquared: Scalar
+You can use it like this:
 
-public static func -(lhs: Point2, rhs: Point2) -> Vector
-public static func +(lhs: Point2, rhs: Vector) -> Point2
+```swift
+var 🐝 = Point2(x:2, y:1), 🌻 = Point2(x:5, y:5), 👻 = Point2(x:3, y:0)
 
-public static func +=(lhs: inout Point2, rhs: Vector)
-public static func -(lhs: Point2, rhs: Vector) -> Point2
-public static func -=(lhs: inout Point2, rhs: Vector)
+let offsetToFlower = 🌻 - 🐝 // Vector2(dx: 3, dy: 4)
+print("🌻 is \(offsetToFlower.length) away.") // "🌻 is 5.0 away."
 
-public static func +(lhs: Vector2, rhs: Vector2) -> Vector2
-public static func +=(lhs: inout Vector2, rhs: Vector2)
+let towardFlower = (🌻 - 🐝).normalized()
+let awayFromGhost = -(👻 - 🐝).normalized()
 
-public static func -(lhs: Vector2, rhs: Vector2) -> Vector2
-public static func -=(lhs: inout Vector2, rhs: Vector2)
+var direction = (towardFlower + 2.0 * awayFromGhost) / 3.0
 
-public static func *(lhs: Vector2, rhs: Scalar) -> Vector2
-public static func *=(lhs: inout Vector2, rhs: Scalar)
+// How close is this direction to the flower?
+let angleTowardFlower = direction.angle(to: towardFlower)
 
-public Vector2(Point2)
-public Vector2(Angle)
-public Point(Vector2)
-public Angle(Vector2)
+// This bee doesn't move in a beeline.
+direction.rotate(by: angleTowardFlower.degrees < 0.0 ? -5.0 : 5.0)
 
-public mutating func rotate(by angle: Angle<Scalar>)
-public func rotated(by angle: Angle<Scalar>) -> Vector2
+// Don't let gravity get you down.
+direction += .up * 0.1
 
-public static prefix func -(that: Vector2) -> Vector2
+🐝 += direction // Move the bee!
 
-public static func /(lhs: Vector2, rhs: Scalar) -> Vector2
-public static func /=(lhs: inout Vector2, rhs: Scalar)
+print("🐝 moved", dot(direction, towardFlower), "toward 🌻") // "🐝 moved 0.56 toward 🌻"
+print("🐝 moved", dot(direction, awayFromGhost), "away from 👻") // "🐝 moved 0.75 away from 👻"
+```
 
-public var length: Scalar
-public var perpendicular: Vector2
+### Point2
 
-public mutating func normalize()
-public func normalized() -> Vector2
+`Point2<Scalar>` defines a position in 2-dimensional space.
+You can use it like this: 
 
-public func angle(to that: Vector2) -> Angle<Scalar>
+```swift
+var point = Point2(x: 10, y: 20)
 
-public func dot<T>(_ lhs: Vector2<T>, _ rhs: Vector2<T>) -> T
+point.x = 15
+print("Point:", point) // "Point: (x: 15.0, y: 20.0)"
 
-## Angles
+print("Distance:", point.distance(to: .zero)) // "Distance: 25.0"
+```
 
-public Angle(radians: Scalar)
-public Angle(degrees: Scalar)
+### Angle
 
-extension Angle: ExpressibleByFloatLiteral
+`Angle2<Scalar>` defines an angle between in 2-dimensional space. 
+You can use it like this:
 
-public init(_ vector: Vector2<Scalar>)
+```swift
+var angle = Angle(degrees: 15.0)
+angle += 90.0
+angle += Angle(radians: .pi)
+angle = -angle * 1.5
 
-public static func +(lhs: Angle, rhs: Angle) -> Angle
-public static func +=(lhs: inout Angle, rhs: Angle)
+print("\(angle) (\(angle.radians) radians)") // "112.5º (1.9634954084936211 radians)"
 
-public static func -(lhs: Angle, rhs: Angle) -> Angle
-public static func -=(lhs: inout Angle, rhs: Angle)
-
-public static func *(lhs: Angle, rhs: Scalar) -> Angle
-public static func *=(lhs: inout Angle, rhs: Scalar)
-
-public static prefix func -(angle: Angle) -> Angle
-
-public var radians: Scalar
-public var degrees: Scalar
-
-public func cos<Scalar: BinaryFloatingPoint>(_ angle: Angle<Scalar>) -> Scalar
-public func sin<Scalar: BinaryFloatingPoint>(_ angle: Angle<Scalar>) -> Scalar
+print(cos(Angle(degrees: 60.0))) // "0.5"
+print(sin(Angle(degrees: 90.0))) // "1.0"
+```
