@@ -2,7 +2,7 @@
 
 # ⭐️ Geometry 📐
 
-This library defines three generic equatable types [Point2](#point2), [Angle](#angle), and [Vector2](#vector2).
+This library defines three generic equatable types [Point2](#point2), [Angle2](#angle2), and [Vector2](#vector2).
 
 ## Installation
 
@@ -75,7 +75,7 @@ print("Point:", point) // "Point: (x: 15.0, y: 20.0)"
 print("Distance:", point.distance(to: .zero)) // "Distance: 25.0"
 ```
 
-### Angle
+### Angle2
 
 `Angle2<Scalar>` defines an angle between in 2-dimensional space. 
 You can use it like this:
