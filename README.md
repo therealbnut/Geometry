@@ -34,28 +34,28 @@ You can use it like this:
 var 🐝 = Point2(x:2, y:1), 🌻 = Point2(x:5, y:5), 👻 = Point2(x:3, y:0)
 
 func beeBrain() -> Vector2<Double> {
-let offsetToFlower = 🌻 - 🐝 // Vector2(dx: 3, dy: 4)
-print("🌻 is \(offsetToFlower.length) away.") // "🌻 is 5.0 away."
+    let offsetToFlower = 🌻 - 🐝 // Vector2(dx: 3, dy: 4)
+    print("🌻 is \(offsetToFlower.length) away.") // "🌻 is 5.0 away."
 
-let towardFlower = (🌻 - 🐝).normalized()
-let awayFromGhost = -(👻 - 🐝).normalized()
+    let towardFlower = (🌻 - 🐝).normalized()
+    let awayFromGhost = -(👻 - 🐝).normalized()
 
-// A weighted average of each of the bee's goals.
-var direction = (towardFlower + 2.0 * awayFromGhost) / 3.0
+    // A weighted average of each of the bee's goals.
+    var direction = (towardFlower + 2.0 * awayFromGhost) / 3.0
 
-// How close is this direction to the flower?
-let angleTowardFlower = direction.angle(to: towardFlower)
+    // How close is this direction to the flower?
+    let angleTowardFlower = direction.angle(to: towardFlower)
 
-// This bee doesn't move in a beeline.
-direction.rotate(by: angleTowardFlower.degrees < 0.0 ? -5.0 : 5.0)
+    // This bee doesn't move in a beeline.
+    direction.rotate(by: angleTowardFlower.degrees < 0.0 ? -5.0 : 5.0)
 
-// Don't let gravity get you down.
-direction += .up * 0.1
+    // Don't let gravity get you down.
+    direction += .up * 0.1
 
-print("move 🐝", dot(direction, towardFlower), "toward 🌻")
-print("move 🐝", dot(direction, awayFromGhost), "away from 👻")
+    print("move 🐝", dot(direction, towardFlower), "toward 🌻")
+    print("move 🐝", dot(direction, awayFromGhost), "away from 👻")
 
-return direction
+    return direction
 }
 
 🐝 += beeBrain() // Move the bee!
